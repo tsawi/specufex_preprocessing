@@ -12,5 +12,8 @@ Script for converting HDF5 waveforms to HDF5 spectrograms for use in SpecUFEx
 
 Script for running SpecUFEx$^{1}$ on HDF5 of spectrograms, using Python implementation$^{2}$ 
 
+
 (1) Holtzman et al., 2018; Machine learning reveals cyclic changes in seismic source spectra in Geysers geothermal field. Science Advances. 4. eaao2929. 10.1126/sciadv.aao2929. 
+
+
 (2) Nate Groebner reference https://github.com/ngroebner/specufex
