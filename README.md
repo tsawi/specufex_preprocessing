@@ -13,7 +13,7 @@ Script for converting HDF5 waveforms to HDF5 spectrograms for use in SpecUFEx
 
 ### 3_runSpecUFExpy
 
-Script for running SpecUFEx(1) on HDF5 of spectrograms, using Python implementation(2)
+Script for running [SpecUFEx(1)](https://advances.sciencemag.org/content/4/5/eaao2929) on HDF5 of spectrograms, using [Python implementation(2)](https://github.com/ngroebner/specufex)
 
 
 
