@@ -28,9 +28,6 @@ key = sys.argv[1]
 
 # key = 'Parkfield_Repeaters'
 
-NbNMFsteps = 50000
-NbHMMsteps = 100000
-
 
 
 
@@ -69,15 +66,15 @@ if H5:
 X = np.array(X)
 
 #%%
-nmf = BayesianNonparametricNMF()
-nmf.fit(X, NbSteps=NbNMFsteps,verbose=1)
-As, Xpwrs = nmf.transform(X)
+nmf = BayesianNonparametricNMF(X.shape)
+nmf.fit(X, verbose=1)
+Vs = nmf.transform(X)
 
 #%%
 
-hmm = BayesianHMM()
-hmm.fit(As, nmf.EW, NbSteps=NbHMMsteps)
-fingerprints, As, Ppis = hmm.transform(As)
+hmm = BayesianHMM(nmf.num_pat, nmf.gain)
+hmm.fit(Vs)
+fingerprints, As, gams = hmm.transform(Vs)
 
 #%%
 plt.imshow(fingerprints[0])
@@ -98,13 +95,13 @@ with h5py.File(SpecUFEx_H5_path,'a') as fileLoad:
     fp_group = fileLoad.create_group('fingerprints')
 
     out_group               = fileLoad.create_group("SpecUFEX_output")
-    
+
     ACM_group               = fileLoad.create_group("SpecUFEX_output/ACM")
     STM_group               = fileLoad.create_group("SpecUFEX_output/STM")
     gain_group              = fileLoad.create_group("SpecUFEX_output/ACM_gain")
 
 
-    
+
     for i, evID in enumerate(fileLoad['spectrograms']):
         fp_group.create_dataset(name= evID, data=fingerprints[i])
         # ACM_group.create_dataset(name=evID,data=As[i]) #ACM
@@ -117,11 +114,11 @@ with h5py.File(SpecUFEx_H5_path,'a') as fileLoad:
     RMM_group                    = fileLoad.create_group("SpecUFEX_output/RMM")
 
 
-    
+
     W_group.create_dataset(name='W',data=nmf.EW)
     EB_group.create_dataset(name=evID,data=hmm.EB)
     # RMM_group.create_dataset(name=evID,data=RMM)
-    gain_group.create_dataset(name='gain',data=nmf.gain) #same for all data               
+    gain_group.create_dataset(name='gain',data=nmf.gain) #same for all data
 
 #%%
 #%%
