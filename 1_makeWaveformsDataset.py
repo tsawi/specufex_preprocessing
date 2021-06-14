@@ -61,12 +61,16 @@ cat = pd.read_csv(pathCat, header=None,delim_whitespace=True)
 
 cat.columns = cat_columns
 
-#for plotting
-cat['datetime'] = pd.to_datetime(cat[['year','month','day','hour','minute','second']])
-
+#for plotting in later scripts
+try:
+    cat['datetime'] = pd.to_datetime(cat[['year','month','day','hour','minute','second']])
+except:
+    print('YOU SHOULD MAKE A DATETIME COLUMN FOR ANALYSIS LATER!')
+    pass
 
 cat['event_ID'] = [int(evID) for evID in cat.event_ID]
 
+print('event ID: ', cat.event_ID.iloc[0])
 
 
 

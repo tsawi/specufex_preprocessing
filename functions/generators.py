@@ -114,10 +114,8 @@ def gen_wf_from_folder(wf_filelist,key,lenData,channel_ID):
 
 #%% make sgram generator
 def gen_sgram_QC(key,evID_list,dataH5_path,trim=True,saveMat=True,sgramOutfile='.',**args):
-    station=args['station']
-    channel=args['channel']
+
     fs=args['fs']
-    lenData=args['lenData']
     nperseg=args['nperseg']
     noverlap=args['noverlap']
     nfft=args['nfft']
