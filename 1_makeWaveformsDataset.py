@@ -85,16 +85,21 @@ wf_test = obspy.read(wf_filelist[0])
 
 lenData = len(wf_test[0].data)
 
-#%%
+#%% define generator (function)
 
 
 gen_wf = gen_wf_from_folder(wf_filelist,key,lenData,channel_ID)
 
 
-
+## clear old H5 if it exists, or else error will appear 
 if os.path.exists(dataH5_path):
     os.remove(dataH5_path)
-evID_keep = []
+    
+#%% add catalog and waveforms to H5
+
+    
+evID_keep = [] #list of wfs to keep
+
 with h5py.File(dataH5_path,'a') as h5file:
 
 
@@ -104,7 +109,9 @@ with h5py.File(dataH5_path,'a') as h5file:
 
     for col in cat.columns:
 
-        if col == 'datetime':
+        if col == 'datetime': ## if there are other columns in your catalog
+        #that are stings, then you may need to extend conditional statement
+        # to use the dtype='S' flag in the next line
             global_catalog_group.create_dataset(name='datetime',data=np.array(cat['datetime'],dtype='S'))
 
         else:
@@ -117,7 +124,7 @@ with h5py.File(dataH5_path,'a') as h5file:
 
 
 
-    dupl_evID = 0
+    dupl_evID = 0 #duplicate event IDs?? not here, sister
     n=0
 
     while n <= len(wf_filelist): ## not sure a better way to execute this? But it works
@@ -127,7 +134,8 @@ with h5py.File(dataH5_path,'a') as h5file:
 
             #these all defined in generator at top of script
             data, evID, n = next(gen_wf)
-            print(n,evID)
+            if n%500==0:
+                print(n, '/', len(wf_filelist))
             # if evID not in group, add dataset to wf group
             if evID not in channel_group:
                 channel_group.create_dataset(name= evID, data=data)
@@ -140,7 +148,7 @@ with h5py.File(dataH5_path,'a') as h5file:
 
 
     sampling_rate = wf_test[0].stats.sampling_rate
-    # instr_response =
+    # instr_response = wf_test[0].stats.instrument_response
     station_info = f"{wf_test[0].stats.network}.{wf_test[0].stats.station}.{wf_test[0].stats.location}.{wf_test[0].stats.channel}."
     calib = wf_test[0].stats.calib
     _format = wf_test[0].stats._format
@@ -153,7 +161,7 @@ with h5py.File(dataH5_path,'a') as h5file:
     processing_group.create_dataset(name= "station_info", data=station_info)
     processing_group.create_dataset(name= "calibration", data=calib)#,dtype='S')
     processing_group.create_dataset(name= "orig_formata", data=_format)#,dtype='S')
-    # processing_group.create_dataset(name= "instr_response", data=instr_response)#,dtype='S')
+    # processing_group.create_dataset(name= "instr_response", data=instr_response,dtype='S')
     processing_group.create_dataset(name= "lenData", data=lenData)#,dtype='S')
 
 
@@ -166,7 +174,7 @@ print(n- dupl_evID, ' waveforms loaded')
 
 
 
-#%%
+#%% save final working catalog to csv
 
 
 cat_keep_wf = cat[cat['event_ID'].isin(evID_keep)]
