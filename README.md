@@ -1,7 +1,7 @@
 # specufex_preprocessing
 
 
-### 1_makeaveformsDataset.py : 
+### 1_makeWaveformsDataset.py : 
 
 Script for loading a folder of waveforms into properly formatted [HDF5](https://en.wikipedia.org/wiki/Hierarchical_Data_Format) file. Must add path names, station parameters, and other user-specific settings into functions/setParams.py and functions/generators.py.
 
