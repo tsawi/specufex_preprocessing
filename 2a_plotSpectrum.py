@@ -207,13 +207,13 @@ if plot:
     axes.set_xlabel(f'Frequency (Hz)')
     axes.set_ylabel(f'power/median(power) [dB]')
 
-    axes.axvline(x=fmin,color='blue',ls='--')
+    axes.axvline(x=fmin,color='blue',ls='--',label='f min or max')
     axes.axvline(x=fmax,color='blue',ls='--')
-    axes.axvline(x=1/winLen_Sec,color='red',ls='-')
+    axes.axvline(x=1/winLen_Sec,color='red',ls='-','1/window length')
 
     # ytext = 150
     # axes.text(fmin-4,ytext,'f_min',color='blue',rotation=0)
-    # axes.text(fmax,ytext,'f_max',color='blue',rotation=0)
+    # # axes.text(fmax,ytext,'f_max',color='blue',rotation=0)
     # axes.text(1/winLen_Sec+.5,ytext,'STFT \n window size',color='green',rotation=0)
 
     # plt.xlim(fmin,fmax)
