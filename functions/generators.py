@@ -113,7 +113,7 @@ def gen_wf_from_folder(wf_filelist,key,lenData,channel_ID):
 
 
 #%% make sgram generator
-def gen_sgram_QC(key,evID_list,dataH5_path,trim=True,saveMat=True,sgramOutfile='.',**args):
+def gen_sgram_QC(key,evID_list,dataH5_path,trim=True,saveMat=False,sgramOutfile='.',**args):
 
     fs=args['fs']
     nperseg=args['nperseg']
