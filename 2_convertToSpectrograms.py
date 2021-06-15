@@ -27,9 +27,9 @@ from generators import gen_sgram_QC
 
 #%% load project variables: names and paths
 
-key = sys.argv[1]
-
-# key = 'Parkfield_Repeaters'
+# key = sys.argv[1]
+# 
+key = 'Parkfield_Repeaters'
 
 
 pathProj, pathCat, pathWF, network, station, channel, channel_ID, filetype, cat_columns = setParams(key)
@@ -108,7 +108,7 @@ gen_sgram = gen_sgram_QC(key,
                         dataH5_path = dataH5_path,
                         h5File=fileLoad, #h5 data file
                         trim=True, #trim to min and max freq
-                        saveMat=True, #set true to save folder of .mat files
+                        saveMat=False, #set true to save folder of .mat files
                         sgramOutfile='.', #path to save .mat files
                         **args
                         ) #path to save sgram figures
@@ -143,6 +143,7 @@ with h5py.File(SpecUFEx_H5_path,'a') as fileLoad:
 
             evID,sgram,fSTFT,tSTFT, normConstant, Nkept,evID_BADones, i = next(gen_sgram) #next() command updates generator
             n = i+1
+
             evID = str(evID)
 
             if not evID in spectrograms_group:

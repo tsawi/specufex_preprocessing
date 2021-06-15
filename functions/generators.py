@@ -126,7 +126,10 @@ def gen_sgram_QC(key,evID_list,dataH5_path,trim=True,saveMat=True,sgramOutfile='
     Nkept = 0
     evID_BADones = []
     for i, evID in enumerate(evID_list):    
-    
+        
+        if i%100==0:
+            print(i,'/',len(evID_list))
+
         with h5py.File(dataH5_path,'a') as fileLoad:
             stations=args['station']
             data = fileLoad[f"waveforms/{stations}/{args['channel']}"].get(str(evID))[:]
@@ -150,6 +153,7 @@ def gen_sgram_QC(key,evID_list,dataH5_path,trim=True,saveMat=True,sgramOutfile='
             STFT_0 = STFT_raw[freq_slice,:][0]
         else:
             STFT_0 = STFT_raw
+            # print(type(STFT_0))
             
     
         # =====  [BH added this, 10-31-2020]:
@@ -204,5 +208,6 @@ def gen_sgram_QC(key,evID_list,dataH5_path,trim=True,saveMat=True,sgramOutfile='
                                 'tSTFT':tSTFT})            
                 
 
-            
+            # print(type(STFT))
+
             yield evID,STFT,fSTFT,tSTFT, normConstant, Nkept,evID_BADones, i

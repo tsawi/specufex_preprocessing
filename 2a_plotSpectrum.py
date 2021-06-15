@@ -60,9 +60,9 @@ from generators import gen_sgram_QC
 
 #%% load project variables: names and paths
 
-key = sys.argv[1]
+# key = sys.argv[1]
 
-# key = 'Parkfield_Repeaters'
+key = 'Parkfield_Repeaters'
 
 
 pathProj, pathCat, pathWF, network, station, channel, channel_ID, filetype, cat_columns = setParams(key)
@@ -161,25 +161,14 @@ while n <= 2:#len(evID_list): ## not sure a better way to execute this? But it w
 
         spectra_for_avg.append(np.array(sgram))
 
-
-    except StopIteration: #handle generator error
-        break
-
-
-#%% PLOT SOME EXAMPLE SPECTROGRAMS with fmin and fmax from H5 file
-n=0
-
-with h5py.File(SpecUFEx_H5_path,'r+') as fileLoad:
-
-    fSTFT_0 = fileLoad['spec_parameters/'].get('fSTFT')[()]
-    tSTFT_0 = fileLoad['spec_parameters/'].get('tSTFT')[()]    
-    for i, sgram in enumerate(fileLoad['spectrograms'].values()):
-        if i%500==0:
+        if n%500==0:
             plt.figure()
-            plt.pcolormesh(tSTFT_0,fSTFT_0,sgram,shading='auto')
+            plt.pcolormesh(tSTFT,fSTFT,sgram,shading='auto')
             plt.xlabel('time (s)')
             plt.ylabel('frequency (Hz)')
 
+    except StopIteration: #handle generator error
+        break
 
 
 #%%

@@ -48,10 +48,10 @@ def setSgramParams(key):
     print( ' key : ', key)
     if key == "Parkfield_Repeaters":
         fmin            = 8
-        fmax            = 40
-        winLen_Sec      = .2#seconds
+        fmax            = 20
+        winLen_Sec      = 1#seconds
         fracOverlap     = 1/4
-        nfft            = 2**10 #padding
+        nfft            = 2000 #padding
         
         
         
