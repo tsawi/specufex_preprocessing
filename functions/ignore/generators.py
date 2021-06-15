@@ -148,9 +148,7 @@ def gen_sgram_QC(key,evID_list,dataH5_path,trim=True,saveMat=True,sgramOutfile='
             #  keep only frequencies within range
             fSTFT   = fSTFT[freq_slice]
             STFT_0 = STFT_raw[freq_slice,:][0]
-        else:
-            STFT_0 = STFT_raw
-            
+    
     
         # =====  [BH added this, 10-31-2020]:
         # Quality control:
@@ -167,16 +165,14 @@ def gen_sgram_QC(key,evID_list,dataH5_path,trim=True,saveMat=True,sgramOutfile='
                 pass
     
         if np.isnan(STFT_0).any()==0 and  np.median(STFT_0)>0 :
-            
-            normConstant = np.median(STFT_0)
-            
-            STFT_norm = STFT_0 / normConstant  ##norm by median
-
-            STFT_dB = 20*np.log10(STFT_norm, where=STFT_norm != 0)  ##convert to dB
+    
+            STFT_dB = 20*np.log10(STFT_0, where=STFT_0 != 0)  ##convert to dB
             # STFT_shift = STFT_dB + np.abs(STFT_dB.min())  ##shift to be above 0
     # 
+            normConstant = np.median(STFT_0)
+            STFT_norm = STFT_dB / normConstant  ##norm by median
     
-            STFT = np.maximum(0, STFT_dB) #make sure nonnegative
+            STFT = np.maximum(0, STFT_norm) #make sure nonnegative
     
             
             if  np.isnan(STFT).any()==1:

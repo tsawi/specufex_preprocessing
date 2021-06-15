@@ -30,11 +30,6 @@ tables.file._open_files.close_all()
 
 key = sys.argv[1]
 print(key)
-print(key)
-
-print(key)
-
-print(key)
 
 #example
 # key = 'Parkfield_Repeaters'
@@ -91,13 +86,13 @@ lenData = len(wf_test[0].data)
 gen_wf = gen_wf_from_folder(wf_filelist,key,lenData,channel_ID)
 
 
-## clear old H5 if it exists, or else error will appear 
+## clear old H5 if it exists, or else error will appear
 if os.path.exists(dataH5_path):
     os.remove(dataH5_path)
-    
+
 #%% add catalog and waveforms to H5
 
-    
+
 evID_keep = [] #list of wfs to keep
 
 with h5py.File(dataH5_path,'a') as h5file:
