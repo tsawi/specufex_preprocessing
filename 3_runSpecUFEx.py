@@ -24,9 +24,9 @@ from specufex import BayesianNonparametricNMF, BayesianHMM
 
 #%% load project variables: names and paths
 
-# key = sys.argv[1]
+key = sys.argv[1]
 # 
-key = 'Parkfield_Repeaters'
+# key = 'Parkfield_Repeaters'
 
 
 
@@ -66,7 +66,7 @@ if H5:
 X = np.array(X)
 
 #%%
-nmf = BayesianNonparametricNMF(X.shape)
+nmf = BayesianNonparametricNMF(75)
 nmf.fit(X, verbose=1)
 Vs = nmf.transform(X)
 

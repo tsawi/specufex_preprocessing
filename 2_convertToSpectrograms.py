@@ -27,9 +27,9 @@ from generators import gen_sgram_QC
 
 #%% load project variables: names and paths
 
-# key = sys.argv[1]
+key = sys.argv[1]
 # 
-key = 'Parkfield_Repeaters'
+# key = 'Parkfield_Repeaters'
 
 
 pathProj, pathCat, pathWF, network, station, channel, channel_ID, filetype, cat_columns = setParams(key)
