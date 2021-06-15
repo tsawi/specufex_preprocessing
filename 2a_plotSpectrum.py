@@ -198,7 +198,6 @@ if plot:
     axes.plot(fSTFT,np.mean(np.mean(spectra_for_avg,axis=0),axis=1)+np.std(np.mean(spectra_for_avg,axis=0),axis=1),c='orange',alpha=alpha,label='+/- 1 std')
     # axes.plot(fSTFT,np.mean(np.mean(spectra_for_avg,axis=0),axis=1)+2*np.std(np.mean(spectra_for_avg,axis=0),axis=1),c='yellow',alpha=alpha,label='+/- 2 std')
 
-    axes.legend()
 
     axes.plot(fSTFT,np.mean(np.mean(spectra_for_avg,axis=0),axis=1)-np.std(np.mean(spectra_for_avg,axis=0),axis=1),c='orange',alpha=alpha)
     # axes.plot(fSTFT,np.mean(np.mean(spectra_for_avg,axis=0),axis=1)-2*np.std(np.mean(spectra_for_avg,axis=0),axis=1),c='yellow',alpha=alpha)
@@ -209,7 +208,8 @@ if plot:
 
     axes.axvline(x=fmin,color='blue',ls='--',label='f min or max')
     axes.axvline(x=fmax,color='blue',ls='--')
-    axes.axvline(x=1/winLen_Sec,color='red',ls='-','1/window length')
+    axes.axvline(x=1/winLen_Sec,color='red',ls='-',label='1/window length')
+    axes.legend()
 
     # ytext = 150
     # axes.text(fmin-4,ytext,'f_min',color='blue',rotation=0)
