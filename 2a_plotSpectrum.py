@@ -96,8 +96,6 @@ print(evID_list[0])
 
 with h5py.File(SpecUFEx_H5_path,'r+') as fileLoad:
 
-    fSTFT = fileLoad['spec_parameters/'].get('fSTFT')[()]
-    tSTFT = fileLoad['spec_parameters/'].get('tSTFT')[()]
     lenData = fileLoad['spec_parameters/'].get('lenData')[()]
     nperseg = fileLoad['spec_parameters/'].get('nperseg')[()]
     noverlap = fileLoad['spec_parameters/'].get('noverlap')[()]
@@ -152,7 +150,7 @@ gen_sgram = gen_sgram_QC(key,
 
 spectra_for_avg=[]
 n=0
-while n <= len(evID_list): ## not sure a better way to execute this? But it works
+while n <= 2:#len(evID_list): ## not sure a better way to execute this? But it works
 
     if n%500==0:
         print(n)
@@ -168,14 +166,17 @@ while n <= len(evID_list): ## not sure a better way to execute this? But it work
         break
 
 
-#%% PLOT SOME EXAMPLE SPECTROGRAMS
+#%% PLOT SOME EXAMPLE SPECTROGRAMS with fmin and fmax from H5 file
 n=0
 
 with h5py.File(SpecUFEx_H5_path,'r+') as fileLoad:
+
+    fSTFT_0 = fileLoad['spec_parameters/'].get('fSTFT')[()]
+    tSTFT_0 = fileLoad['spec_parameters/'].get('tSTFT')[()]    
     for i, sgram in enumerate(fileLoad['spectrograms'].values()):
         if i%500==0:
             plt.figure()
-            plt.pcolormesh(tSTFT,fSTFT,sgram,shading='auto')
+            plt.pcolormesh(tSTFT_0,fSTFT_0,sgram,shading='auto')
             plt.xlabel('time (s)')
             plt.ylabel('frequency (Hz)')
 
