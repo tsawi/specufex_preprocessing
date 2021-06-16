@@ -13,7 +13,7 @@ Script for loading a folder of waveforms into properly formatted [HDF5](https://
 
 ### 2_convertToSpectrograms.py
 
-Script for converting HDF5 waveforms to HDF5 spectrograms for use in SpecUFEx. Must update the specrtogram parameters in functions/setParams.py
+Script for converting HDF5 waveforms to HDF5 spectrograms for use in SpecUFEx. Must update the spectrogram parameters in functions/setParams.py
 
 
 *input* :: HDF5 of waveforms 
