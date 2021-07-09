@@ -24,18 +24,19 @@ import tables
 tables.file._open_files.close_all()
 
 
-
+# ==============================================
+# STUFF THAT GETS CHANGED WHEN WE MOVE TO config.py
 #%% load project variables: names and paths
 
 
 key = sys.argv[1]
 print(key)
 
-#example
-# key = 'Parkfield_Repeaters'
+# pick the operating system, for pandas.to_csv
+OSflag = 'linux'
+#OSflag = 'mac'
 
-# key='1'
-
+# -------------
 pathProj, pathCat, pathWF, network, station, channel, channel_ID, filetype, cat_columns = setParams(key)
 
 
@@ -177,8 +178,11 @@ cat_keep_wf = cat[cat['event_ID'].isin(evID_keep)]
 if os.path.exists(wf_cat_out):
     os.remove(wf_cat_out)
 
-
-cat_keep_wf.to_csv(wf_cat_out)
+print('formatting CSV catalog for ',OSflag)
+if OSflag=='linux':
+    cat_keep_wf.to_csv(wf_cat_out,line_terminator='\n')
+elif OSflag=='mac':
+    cat_keep_wf.to_csv(wf_cat_out)
 
 print(len(cat_keep_wf), ' events in wf catalog')
 

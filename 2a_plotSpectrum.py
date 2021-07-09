@@ -61,8 +61,6 @@ from generators import gen_sgram_QC
 
 key = sys.argv[1]
 
-# key = 'Parkfield_Repeaters'
-
 
 pathProj, pathCat, pathWF, network, station, channel, channel_ID, filetype, cat_columns = setParams(key)
 fmin, fmax, winLen_Sec, fracOverlap, nfft = setSgramParams(key)
@@ -87,6 +85,8 @@ pathSgram_cat = pathProj + f'sgram_cat_out_{key}.csv'
 wf_cat = pd.read_csv(pathSgram_cat)
 evID_list = list(wf_cat.event_ID)
 print(evID_list[0])
+N_tot = len(evID_list)
+print(N_tot)
 
 
 
@@ -102,7 +102,7 @@ with h5py.File(SpecUFEx_H5_path,'r+') as fileLoad:
     mode = fileLoad['spec_parameters/'].get('mode')[()].decode('UTF-8')
     scaling = fileLoad['spec_parameters/'].get('scaling')[()].decode('UTF-8')
     nfft = fileLoad['spec_parameters/'].get('nfft')[()]
-    lenData = fileLoad['spec_parameters/'].get('lenData')[()]
+    #lenData = fileLoad['spec_parameters/'].get('lenData')[()]
 
 #padding must be longer than n per window segment
 if nfft < nperseg:
@@ -146,10 +146,10 @@ gen_sgram = gen_sgram_QC(key,
 
 #%%
 
-
+NsgramsCheck =  501 # N_tot
 spectra_for_avg=[]
 n=0
-while n <= 2:#len(evID_list): ## not sure a better way to execute this? But it works
+while n <= NsgramsCheck:#len(evID_list): ## not sure a better way to execute this? But it works
 
     if n%500==0:
         print(n)
@@ -165,6 +165,7 @@ while n <= 2:#len(evID_list): ## not sure a better way to execute this? But it w
             plt.pcolormesh(tSTFT,fSTFT,sgram,shading='auto')
             plt.xlabel('time (s)')
             plt.ylabel('frequency (Hz)')
+            plt.show()
 
     except StopIteration: #handle generator error
         break
@@ -200,6 +201,7 @@ if plot:
     axes.axvline(x=1/winLen_Sec,color='red',ls='-',label='1/window length')
     axes.legend()
 
+plt.show()
     # ytext = 150
     # axes.text(fmin-4,ytext,'f_min',color='blue',rotation=0)
     # # axes.text(fmax,ytext,'f_max',color='blue',rotation=0)

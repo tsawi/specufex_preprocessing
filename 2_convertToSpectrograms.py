@@ -25,12 +25,16 @@ tables.file._open_files.close_all()
 from setParams import setParams,setSgramParams
 from generators import gen_sgram_QC
 
+# ============================================
+# STUFF to change when we go to config.py method
 #%% load project variables: names and paths
 
 key = sys.argv[1]
-# 
-# key = 'Parkfield_Repeaters'
 
+# pick the operating system, for pandas.to_csv
+OSflag = 'linux'
+#OSflag = 'mac'
+# =====================================================
 
 pathProj, pathCat, pathWF, network, station, channel, channel_ID, filetype, cat_columns = setParams(key)
 
@@ -58,7 +62,7 @@ pathSgram_cat = pathProj + f'sgram_cat_out_{key}.csv'
 wf_cat = pd.read_csv(pathWf_cat)
 evID_list = list(wf_cat.event_ID)
 
-
+print('length of event file list: ',len(evID_list))
 
 #%% get sgram params
 fmin, fmax, winLen_Sec, fracOverlap, nfft = setSgramParams(key)
@@ -128,7 +132,7 @@ with h5py.File(SpecUFEx_H5_path,'a') as fileLoad:
 
     if 'spectrograms' in fileLoad.keys():
         del fileLoad["spectrograms"]
-        
+
     if 'sgram_normConst' in fileLoad.keys():
         del fileLoad["sgram_normConst"]
 
@@ -148,7 +152,7 @@ with h5py.File(SpecUFEx_H5_path,'a') as fileLoad:
 
             if not evID in spectrograms_group:
                 spectrograms_group.create_dataset(name= evID, data=sgram)
-                evID_list_QC_sgram.append(evID)
+                evID_list_QC_sgram.append(np.int64(evID))
 
             if not evID in sgram_normConst_group:
                 sgram_normConst_group.create_dataset(name= evID, data=normConstant)
@@ -182,23 +186,44 @@ with h5py.File(SpecUFEx_H5_path,'a') as fileLoad:
 
 
 
+print(evID_list_QC_sgram[0])
+print(type(evID_list_QC_sgram[0]))
+
+print(wf_cat['event_ID'].iloc[0])
+print(type(wf_cat['event_ID'].iloc[0]))
 
 #%% merge catalogs
-
+print(len(wf_cat))
 cat_keep_sgram = wf_cat[wf_cat['event_ID'].isin(evID_list_QC_sgram)]
+print(len(cat_keep_sgram))
+#print(cat_keep_sgram)
+
 
 try:
-
+#   cat_keep_sgram = cat_keep_sgram.drop(['Unnamed: 0'],axis=1)
     cat_keep_sgram = cat_keep_sgram.drop(['Unnamed: 0'],axis=1)
-
 except:
-    pass
+   pass
 
 if os.path.exists(pathSgram_cat):
     os.remove(pathSgram_cat)
-cat_keep_sgram.to_csv(pathSgram_cat)
+
+print('formatting CSV catalog for ',OSflag)
+if OSflag=='linux':
+    cat_keep_sgram.to_csv(pathSgram_cat,line_terminator='\n')
+elif OSflag=='mac':
+    cat_keep_sgram.to_csv(pathSgram_cat)
 
 
+'''
+line_terminatorstr, optional
+The newline character or character sequence to use in the output file.
+Defaults to os.linesep, which depends on the OS
+in which this method is called (‘\n’ for linux, ‘\r\n’ for Windows, i.e.).
+so easiest fix may be to try to insert line_terminator='\n'
+in lines ~180 or 188 in 1_ and 2_.py
+? wherever “to_csv” is
+'''
 #%% save local catalog to original datafile
 
 with h5py.File(dataH5_path,'a') as h5file:
