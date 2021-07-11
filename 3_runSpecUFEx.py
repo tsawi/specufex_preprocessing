@@ -24,12 +24,8 @@ from specufex import BayesianNonparametricNMF, BayesianHMM
 
 #%% load project variables: names and paths
 
-# key = sys.argv[1]
+key = sys.argv[1]
 #
-key = 'Parkfield_Repeaters'
-
-
-
 
 #%%
 ### do not change these ###
