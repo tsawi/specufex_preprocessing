@@ -216,6 +216,7 @@ elif OSflag=='mac':
 
 
 '''
+NOT SURE WE NEED THIS--- test removing it on mac and linux
 line_terminatorstr, optional
 The newline character or character sequence to use in the output file.
 Defaults to os.linesep, which depends on the OS

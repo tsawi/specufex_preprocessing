@@ -137,7 +137,7 @@ gen_sgram = gen_sgram_QC(key,
                         evID_list=evID_list,
                         dataH5_path = dataH5_path,
                         h5File=fileLoad, #h5 data file
-                        trim=False, #trim to min and max freq
+                        trim=True, #trim to min and max freq -# THIS has to be set in the .config !!! 
                         saveMat=False, #set true to save folder of .mat files
                         sgramOutfile='.', #path to save .mat files
                         **args
@@ -146,7 +146,7 @@ gen_sgram = gen_sgram_QC(key,
 
 #%%
 
-NsgramsCheck =  501 # N_tot
+NsgramsCheck =  1502 # N_tot
 spectra_for_avg=[]
 n=0
 while n <= NsgramsCheck:#len(evID_list): ## not sure a better way to execute this? But it works
