@@ -50,7 +50,8 @@ sgram_cat = pd.read_csv(pathSgram_cat)
 
 H5=True # any reason to keep this ?
 
-# NUMPY WAY (can certainly be cleaned/tightened up-- very verbose as written:)
+# a NUMPY WAY (can certainly be cleaned/tightened up-- very verbose as written:)
+# and I got the shape wrong.. the list .append() adds to axis=0, not 2.
 if H5:
     # with h5py.File(SpecUFEx_H5_path,'a') as fileLoad:
     #     count = 0
@@ -129,31 +130,34 @@ with h5py.File(SpecUFEx_H5_path,'a') as fileLoad:
     ##fingerprints are top folder
     if 'fingerprints' in fileLoad.keys():
         del fileLoad["fingerprints"]
-
     fp_group = fileLoad.create_group('fingerprints')
 
+    if 'SpecUFEX_output' in fileLoad.keys():
+        del fileLoad["SpecUFEX_output"]
     out_group = fileLoad.create_group("SpecUFEX_output")
 
-    ACM_group = fileLoad.create_group("SpecUFEX_output/ACM")
-    STM_group = fileLoad.create_group("SpecUFEX_output/STM")
-    gain_group = fileLoad.create_group("SpecUFEX_output/ACM_gain")
-
-
-
+    # write fingerprints: ===============================
     for i, evID in enumerate(fileLoad['spectrograms']):
         fp_group.create_dataset(name= evID, data=fingerprints[i])
-        # ACM_group.create_dataset(name=evID,data=As[i]) #ACM
-        # STM_group.create_dataset(name=evID,data=gam[i]) #STM
+        #ACM_group.create_dataset(name=evID,data=As[i]) #ACM
+        #STM_group.create_dataset(name=evID,data=gam[i]) #STM
 
+    # write the SpecUFEx out: ===========================
+    # maybe include these, but they are not yet tested.
+    #ACM_group = fileLoad.create_group("SpecUFEX_output/ACM")
+    #STM_group = fileLoad.create_group("SpecUFEX_output/STM")
 
+    # for i, evID in enumerate(fileLoad['spectrograms']):
+    #     ACM_group.create_dataset(name=evID,data=As[i]) #ACM
+    #     STM_group.create_dataset(name=evID,data=gam[i]) #STM
+
+    gain_group = fileLoad.create_group("SpecUFEX_output/ACM_gain")
     W_group                      = fileLoad.create_group("SpecUFEX_output/W")
-    gain_group                   = fileLoad.create_group("SpecUFEX_output/gain")
     EB_group                     = fileLoad.create_group("SpecUFEX_output/EB")
-    RMM_group                    = fileLoad.create_group("SpecUFEX_output/RMM")
-
-
+    ## # # delete probably ! gain_group                   = fileLoad.create_group("SpecUFEX_output/gain")
+    #RMM_group                    = fileLoad.create_group("SpecUFEX_output/RMM")
 
     W_group.create_dataset(name='W',data=nmf.EW)
     EB_group.create_dataset(name=evID,data=hmm.EB)
-    # RMM_group.create_dataset(name=evID,data=RMM)
     gain_group.create_dataset(name='gain',data=nmf.gain) #same for all data
+    # RMM_group.create_dataset(name=evID,data=RMM)
